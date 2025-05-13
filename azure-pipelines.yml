@@ -14,7 +14,16 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: 'latest'
+    
+- script: dotnet build
+  displayName: 'Build the project'
+
+- script: dotnet pack
+  displayName: 'Package the project'
+
+- script: dotnet nuget push bin/*.nupkg --source https://pkgs.dev.azure.com/YOUR_ORG/_packaging/YOUR_FEED/nuget/v3/index.json
+  displayName: 'Push to Azure Artifacts'
