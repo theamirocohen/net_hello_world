@@ -17,7 +17,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: 'latest'
+    version: '9.0.105'
     
 - script: dotnet build
   displayName: 'Build the project'
