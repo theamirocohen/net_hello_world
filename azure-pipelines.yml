@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  name: Hosted agent # or the name of your self-hosted agent pool
+  name: agent_pool_hdo4 # or the name of your self-hosted agent pool
   demands: agent.name -equals hdo4
 
 steps:
