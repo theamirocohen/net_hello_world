@@ -25,5 +25,5 @@ steps:
 - script: dotnet pack
   displayName: 'Package the project'
 
-- script: dotnet nuget push bin/*.nupkg --source https://pkgs.dev.azure.com/theamirocohen/_packaging/hdo4_feed/nuget/v3/index.json
-  displayName: 'Push to Azure Artifact'
+- script: dotnet nuget push bin/*.nupkg --source https://pkgs.dev.azure.com/theamirocohen/_packaging/hdo4_feed/nuget/v3/index.json --api-key $(System.AccessToken)
+  displayName: 'Push to Azure Artifacts'
