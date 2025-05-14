@@ -20,7 +20,7 @@ steps:
     version: '9.0.105'
     
 - script: dotnet build
-  displayName: 'Build the project'
+  displayName: 'Build the projects'
 
 - script: dotnet pack
   displayName: 'Package the project'
