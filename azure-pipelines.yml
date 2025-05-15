@@ -81,7 +81,7 @@ stages:
   - job: Notify
     steps:
     - script: |
-        echo "Branch: $(Build.SourceBranchName), Version: $(Build.BuildNumber)" | mailx -s "Build Notification" theamirocohen@gmail.com
+        echo "Branch: $(Build.SourceBranchName), Version: $(Build.BuildNumber)" | mailx -s "build notification" theamirocohen@gmail.com
       displayName: "Send Email with Build Details"
 
 
