@@ -3,26 +3,47 @@ trigger:
 - main
 
 pool:
-  name: agent_pool_hdo4 # or the name of your self-hosted agent pool
+  name: agent_pool_hdo4
   demands: agent.name -equals hdo4
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+- stage: Build
+  displayName: "Build Stage"
+  jobs:
+  - job: BuildJob
+    steps:
+    - script: echo "Starting Build..."
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '9.0.105'
+    - script: dotnet build
+      displayName: "Build the projects"
+    - script: dotnet pack
+      displayName: "Package the project"
+    - script: echo "Build Number $(Build.BuildNumber)"
+      displayName: "Print Build Number"
 
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '9.0.105'
-    
-- script: dotnet build
-  displayName: 'Build the projects'
+- stage: Test
+  displayName: "Test Stage"
+  condition: succeeded() # Runs only if the Build stage succeeds
+  jobs:
+  - job: TestJob
+    steps:
+    - script: echo "Running Unit Tests..."
+    - script: dotnet test
+      displayName: "Execute Tests"
 
-- script: dotnet pack
-  displayName: 'Package the project'
- 
-- script: echo 'Build Number $(Build.BuildNumber)'
-  displayName: 'Print Build Number'
+- stage: Deploy
+  displayName: "Deploy Stage"
+  condition: succeeded() # Runs only if the Test stage succeeds
+  jobs:
+  - job: DeployJob
+    steps:
+    - script: echo "Deploying application..."
+    - script: echo "Deployment completed!"
+
+
 
 # - script: dotnet nuget push bin/*.nupkg --source https://pkgs.dev.azure.com/theamirocohen/_packaging/hdo4_feed_temp/nuget/v3/index.json --api-key $(System.AccessToken)
 #   displayName: 'Push to Azure Artifacts'
