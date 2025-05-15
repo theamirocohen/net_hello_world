@@ -88,7 +88,7 @@ stages:
         $Subject = "Build Notification"
         $Body = "Branch: $(Build.SourceBranchName), Version: $(Build.BuildNumber)"
         
-        Send-MailMessage -From $From -To $To -Subject $Subject -Body $Body -SmtpServer $SMTPServer -Port $SMTPPort -Credential (Get-Credential) -UseSsl
+        Send-MailMessage -From "azure_pipeline@gmail.com" -To "theamirocohen@gmail.com" -Subject "Build Notification" -Body "Branch: $(Build.SourceBranchName), Version: $(Build.BuildNumber)" -SmtpServer "smtp.your-email-provider.com" -Port 587 -Credential $smtpCred
     displayName: "Send Email with Build Details"
 
 
