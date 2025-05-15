@@ -17,6 +17,8 @@ stages:
         SonarQube: 'sonar-qube'
         scannerMode: 'dotnet'
         projectKey: 'azure_net'
+        extraProperties: |
+          sonar.branch.name=
     - script: echo "Starting Build..."
     - task: UseDotNet@2
       inputs:
