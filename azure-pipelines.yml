@@ -36,7 +36,7 @@ stages:
 
 - stage: Deploy
   displayName: "Deploy Stage"
-  condition: succeeded() # Runs only if the Test stage succeeds
+  condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/main'), succeeded())
   jobs:
   - job: DeployJob
     steps:
