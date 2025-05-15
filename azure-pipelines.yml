@@ -7,18 +7,34 @@ pool:
   demands: agent.name -equals hdo4
 
 stages:
-- stage: StaticAnalyzeBuild
+- stage: SonarQubeScan
+  jobs:
+  - job: CodeAnalysis
+    steps:
+    - task: SonarQubePrepare@5
+      inputs:
+        SonarQube: 'sonar-qube'  # Use the new generic connection name
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: 'your-project-key'
+        cliProjectName: 'Your Project'
+        cliProjectVersion: '$(Build.BuildNumber)'
+        extraProperties: |
+          sonar.host.url=http://20.74.82.244:9000
+          sonar.login=$(SONAR_TOKEN)
+
+- stage: Build
   displayName: "Build Stage"
   jobs:
-  - job: StaticAnalyze
+  - job: Build
     steps:
-    - task: SonarQubePrepare@7
-      inputs:
-        SonarQube: 'sonar-qube'
-        scannerMode: 'dotnet'
-        projectKey: 'azure_net'
-        extraProperties: |
-          sonar.branch.name=
+    # - task: SonarQubePrepare@7
+    #   inputs:
+    #     SonarQube: 'sonar-qube'
+    #     scannerMode: 'dotnet'
+    #     projectKey: 'azure_net'
+    #     extraProperties: |
+    #       sonar.branch.name=
     - script: echo "Starting Build..."
     - task: UseDotNet@2
       inputs:
@@ -30,12 +46,14 @@ stages:
       displayName: "Package the project"
     - script: echo "Build Number $(Build.BuildNumber)"
       displayName: "Print Build Number"
-    - task: SonarQubeAnalyze@7
-      inputs:
-        jdkversion: 'JAVA_HOME_17_X64'
-    - task: SonarQubePublish@7
-      inputs:
-        pollingTimeoutSec: '300'
+    - script: echo "Branch Name $(Build.SourceBranchName)"
+      displayName: "Print Branch Name"
+    # - task: SonarQubeAnalyze@7
+    #   inputs:
+    #     jdkversion: 'JAVA_HOME_17_X64'
+    # - task: SonarQubePublish@7
+    #   inputs:
+    #     pollingTimeoutSec: '300'
 
 - stage: Test
   displayName: "Test Stage"
@@ -56,21 +74,7 @@ stages:
     - script: echo "Deploying application..."
     - script: echo "Deployment completed!"
 
-# - stage: SonarQubeScan
-#   jobs:
-#   - job: CodeAnalysis
-#     steps:
-#     - task: SonarQubePrepare@5
-#       inputs:
-#         SonarQube: 'sonar-qube'  # Use the new generic connection name
-#         scannerMode: 'CLI'
-#         configMode: 'manual'
-#         cliProjectKey: 'your-project-key'
-#         cliProjectName: 'Your Project'
-#         cliProjectVersion: '$(Build.BuildNumber)'
-#         extraProperties: |
-#           sonar.host.url=http://20.74.82.244:9000
-#           sonar.login=$(SONAR_TOKEN)
+
 
 
     # - script: dotnet nuget push bin/*.nupkg --source https://pkgs.dev.azure.com/theamirocohen/_packaging/hdo4_feed_temp/nuget/v3/index.json --api-key $(System.AccessToken)
