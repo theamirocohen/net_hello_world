@@ -1,7 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
 trigger:
 - main
@@ -24,6 +20,11 @@ steps:
 
 - script: dotnet pack
   displayName: 'Package the project'
+ 
+- script: echo 'Build Number $(Build.BuildNumber)'
+  displayName: 'Print Build Number'
 
-- script: dotnet nuget push bin/*.nupkg --source https://pkgs.dev.azure.com/theamirocohen/_packaging/hdo4_feed_temp/nuget/v3/index.json --api-key $(System.AccessToken)
-  displayName: 'Push to Azure Artifacts'
+# - script: dotnet nuget push bin/*.nupkg --source https://pkgs.dev.azure.com/theamirocohen/_packaging/hdo4_feed_temp/nuget/v3/index.json --api-key $(System.AccessToken)
+#   displayName: 'Push to Azure Artifacts'
+
+ 
