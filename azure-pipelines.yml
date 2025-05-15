@@ -6,6 +6,9 @@ pool:
   name: agent_pool_hdo4
   demands: agent.name -equals hdo4
 
+variables:
+  SONARQUBE_SCANNER_PARAMS: '{"sonar.branch.name": ""}'
+
 stages:
 - stage: StaticAnalyzeBuild
   displayName: "Build Stage"
@@ -17,8 +20,6 @@ stages:
         SonarQube: 'sonar-qube'
         scannerMode: 'dotnet'
         projectKey: 'azure_net'
-        extraProperties: |
-          sonar.branch.name=
     - script: echo "Starting Build..."
     - task: UseDotNet@2
       inputs:
