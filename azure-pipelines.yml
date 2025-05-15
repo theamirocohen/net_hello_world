@@ -81,15 +81,10 @@ stages:
   - job: Notify
     steps:
     - script: |
-        $SMTPServer = "smtp.gmail.com"
-        $SMTPPort = 587
-        $From = "azure_pipeline@gmail.com"
-        $To = "theamirocohen@gmail.com"
-        $Subject = "Build Notification"
-        $Body = "Branch: $(Build.SourceBranchName), Version: $(Build.BuildNumber)"
-        
-        Send-MailMessage -From "azure_pipeline@gmail.com" -To "theamirocohen@gmail.com" -Subject "Build Notification" -Body "Branch: $(Build.SourceBranchName), Version: $(Build.BuildNumber)" -SmtpServer "smtp.your-email-provider.com" -Port 587 -Credential $smtpCred
-    displayName: "Send Email with Build Details"
+        echo "Branch: $(Build.SourceBranchName), Version: $(Build.BuildNumber)" | mailx -s "Build Notification" theamirocohen@gmail.com
+      displayName: "Send Email with Build Details"
+
+
 
 
 
