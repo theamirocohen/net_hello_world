@@ -74,6 +74,24 @@ stages:
     - script: echo "Deploying application..."
     - script: echo "Deployment completed!"
 
+- stage: Notify
+  displayName: "Notify Stage"
+  condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/main'), succeeded())
+  jobs:
+  - job: Notify
+    steps:
+    - script: |
+        $SMTPServer = "smtp.gmail.com"
+        $SMTPPort = 587
+        $From = "azure_pipeline@gmail.com"
+        $To = "theamirocohen@gmail.com"
+        $Subject = "Build Notification"
+        $Body = "Branch: $(Build.SourceBranchName), Version: $(Build.BuildNumber)"
+        
+        Send-MailMessage -From $From -To $To -Subject $Subject -Body $Body -SmtpServer $SMTPServer -Port $SMTPPort -Credential (Get-Credential) -UseSsl
+    displayName: "Send Email with Build Details"
+
+
 
 
 
