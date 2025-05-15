@@ -6,11 +6,9 @@ pool:
   name: agent_pool_hdo4
   demands: agent.name -equals hdo4
 
-
-
 stages:
 
-- stage: Static
+- stage: StaticAnalyze
   displayName: "Build Stage"
   jobs:
   - job: StaticAnalyze
