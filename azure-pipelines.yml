@@ -7,8 +7,7 @@ pool:
   demands: agent.name -equals hdo4
 
 stages:
-
-- stage: StaticAnalyze
+- stage: StaticAnalyzeBuild
   displayName: "Build Stage"
   jobs:
   - job: StaticAnalyze
@@ -18,12 +17,6 @@ stages:
         SonarQube: 'sonar-qube'
         scannerMode: 'dotnet'
         projectKey: 'azure_net'
-
-- stage: Build
-  displayName: "Build Stage"
-  jobs:
-  - job: BuildJob
-    steps:
     - script: echo "Starting Build..."
     - task: UseDotNet@2
       inputs:
