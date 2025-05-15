@@ -18,12 +18,6 @@ stages:
         SonarQube: 'sonar-qube'
         scannerMode: 'dotnet'
         projectKey: 'azure_net'
-    - task: SonarQubeAnalyze@7
-      inputs:
-        jdkversion: 'JAVA_HOME_17_X64'
-    - task: SonarQubePublish@7
-      inputs:
-        pollingTimeoutSec: '300'
 
 - stage: Build
   displayName: "Build Stage"
@@ -41,6 +35,12 @@ stages:
       displayName: "Package the project"
     - script: echo "Build Number $(Build.BuildNumber)"
       displayName: "Print Build Number"
+    - task: SonarQubeAnalyze@7
+      inputs:
+        jdkversion: 'JAVA_HOME_17_X64'
+    - task: SonarQubePublish@7
+      inputs:
+        pollingTimeoutSec: '300'
 
 - stage: Test
   displayName: "Test Stage"
